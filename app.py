@@ -8,7 +8,7 @@ def create_board():
     return board
 
 def is_collumn_valid(board, collumn):
-    return board[5][collumn] == 0
+    return board[NUM_ROW - 1][collumn] == 0
 
 def drop_move(board, row, collumn, piece):
     board[row][collumn] = piece
@@ -20,6 +20,21 @@ def next_open_row(board, collumn):
 
 def print_board(board):
     print(np.flip(board,0))
+def end_game(board, piece):
+    for c in range(NUM_COL - 3):
+        for r in range(NUM_ROW):
+            #Horizontal locations for win
+            if (board[r][c]==piece and board[r][c+1] == piece and board[r][c+2] == piece and board[r][c+3] == piece):
+                return True
+            #Vertical locations for win
+            elif(board[r][c] == piece and board[r+1][c] == piece and board[r+2][c] and board[r+3][c] == piece):
+                return True
+            elif(board[r][c] == piece and board[r+1][c+1] == [piece] and board [r+2][c+2] == piece and board[r+3][c+3] == piece)
+                return True
+            #Check if it works!!!!
+
+
+
 
 game_over = False
 board = create_board()
