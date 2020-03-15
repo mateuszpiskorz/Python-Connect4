@@ -26,12 +26,23 @@ def end_game(board, piece):
             #Horizontal locations for win
             if (board[r][c]==piece and board[r][c+1] == piece and board[r][c+2] == piece and board[r][c+3] == piece):
                 return True
-            #Vertical locations for win
-            elif(board[r][c] == piece and board[r+1][c] == piece and board[r+2][c] and board[r+3][c] == piece):
+
+    for c in range(NUM_COL):
+        for r in range(NUM_ROW-3):
+            if (board[r][c] == piece and board[r + 1][c] == piece and board[r + 2][c] and board[r + 3][c] == piece):
                 return True
-            elif(board[r][c] == piece and board[r+1][c+1] == [piece] and board [r+2][c+2] == piece and board[r+3][c+3] == piece)
+            
+    for c in range(NUM_COL-3):
+        for r in range(NUM_ROW-3):
+            if (board[r][c] == piece and board[r + 1][c + 1] == [piece] and board[r + 2][c + 2] == piece and
+                    board[r + 3][c + 3] == piece):
                 return True
-            #Check if it works!!!!
+
+    for c in range(NUM_COL):
+        for r in range(3,NUM_ROW):
+            if (board[r][c] == piece and board[r - 1][c + 1] == [piece] and board[r - 2][c + 2] == piece and
+                    board[r - 3][c + 3] == piece):
+                return True
 
 
 
@@ -50,11 +61,18 @@ while (not game_over):
             row = next_open_row(board,selection)
             drop_move(board,row,selection,1)
 
+            if(end_game(board, 1) == True):
+                print("Player 1 wins!!!")
+                game_over = True
+
     else:
         selection = int(input("Player 2 make your selection(0-6)!: "))
         if(is_collumn_valid(board,selection) == True):
             row = next_open_row(board,selection)
             drop_move(board,row,selection,2)
+            if (end_game(board, 2) == True):
+                print("Player 2 wins!!!")
+                game_over = True
     print_board(board)
     turn += 1
     turn = turn % 2
