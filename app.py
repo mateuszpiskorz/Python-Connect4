@@ -1,7 +1,15 @@
 import numpy as np
+import pygame
+import sys
 
 NUM_ROW = 6
 NUM_COL = 7
+SQUARE_SIZE = 100
+WIDTH = NUM_COL * SQUARE_SIZE
+HEIGHT =  (NUM_ROW+1) * SQUARE_SIZE
+BLUE = (0,0,255)
+BLACK = (0,0,0)
+RADIUS = int(SQUARE_SIZE/2 - 5)
 
 def create_board():
     board = np.zeros((NUM_ROW,NUM_COL))
@@ -20,6 +28,7 @@ def next_open_row(board, collumn):
 
 def print_board(board):
     print(np.flip(board,0))
+
 def end_game(board, piece):
     for c in range(NUM_COL - 3):
         for r in range(NUM_ROW):
@@ -31,7 +40,7 @@ def end_game(board, piece):
         for r in range(NUM_ROW-3):
             if (board[r][c] == piece and board[r + 1][c] == piece and board[r + 2][c] and board[r + 3][c] == piece):
                 return True
-            
+
     for c in range(NUM_COL-3):
         for r in range(NUM_ROW-3):
             if (board[r][c] == piece and board[r + 1][c + 1] == [piece] and board[r + 2][c + 2] == piece and
@@ -45,34 +54,55 @@ def end_game(board, piece):
                 return True
 
 
-
+def draw_board(board):
+    for c in range(NUM_COL):
+        for r in range(NUM_ROW):
+            pygame.draw.rect(screen,BLUE, (c*SQUARE_SIZE, r*SQUARE_SIZE+SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE),0)
+            pygame.draw.circle(screen,BLACK,(int(c*SQUARE_SIZE+SQUARE_SIZE/2),int(r*SQUARE_SIZE+SQUARE_SIZE+SQUARE_SIZE/2)),RADIUS)
 
 game_over = False
 board = create_board()
 print_board(board)
 turn = 0
 
+pygame.init()
+
+
+size = (WIDTH,HEIGHT)
+screen = pygame.display.set_mode(size)
+draw_board(board)
+pygame.display.update()
+
+
+
 while (not game_over):
 
-    if(turn==0):
-        selection = int(input("Player 1 make your selection(0-6)!: "))
+    for event in pygame.event.get():
+        if (event.type == pygame.QUIT):
+            sys.exit()
 
-        if(is_collumn_valid(board,selection) == True):
-            row = next_open_row(board,selection)
-            drop_move(board,row,selection,1)
+        if(event.type == pygame.MOUSEBUTTONDOWN):
+            print("")
 
-            if(end_game(board, 1) == True):
-                print("Player 1 wins!!!")
-                game_over = True
-
-    else:
-        selection = int(input("Player 2 make your selection(0-6)!: "))
-        if(is_collumn_valid(board,selection) == True):
-            row = next_open_row(board,selection)
-            drop_move(board,row,selection,2)
-            if (end_game(board, 2) == True):
-                print("Player 2 wins!!!")
-                game_over = True
-    print_board(board)
-    turn += 1
-    turn = turn % 2
+            # if(turn==0):
+            #     selection = int(input("Player 1 make your selection(0-6)!: "))
+            #
+            #     if(is_collumn_valid(board,selection) == True):
+            #         row = next_open_row(board,selection)
+            #         drop_move(board,row,selection,1)
+            #
+            #         if(end_game(board, 1) == True):
+            #             print("Player 1 wins!!!")
+            #             game_over = True
+            #
+            # else:
+            #     selection = int(input("Player 2 make your selection(0-6)!: "))
+            #     if(is_collumn_valid(board,selection) == True):
+            #         row = next_open_row(board,selection)
+            #         drop_move(board,row,selection,2)
+            #         if (end_game(board, 2) == True):
+            #             print("Player 2 wins!!!")
+            #             game_over = True
+            # print_board(board)
+            # turn += 1
+            # turn = turn % 2
